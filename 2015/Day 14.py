@@ -1,4 +1,4 @@
-from GetInput import get_input
+from Utility import get_input
 
 
 class Reindeer:

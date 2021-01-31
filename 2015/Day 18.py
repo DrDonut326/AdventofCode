@@ -1,5 +1,5 @@
 from Grids import DictGrid
-from GetInput import get_input
+from Utility import get_input
 from copy import deepcopy
 
 

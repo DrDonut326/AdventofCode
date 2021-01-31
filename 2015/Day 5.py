@@ -1,4 +1,4 @@
-from GetInput import get_input
+from Utility import get_input
 
 
 def has_at_least_3_vowels(s):
