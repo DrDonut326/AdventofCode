@@ -54,7 +54,7 @@ class DictGrid:
         if self.bounded:
             cleaned_ans = []
             for p in ans:
-                if 0 <= p.x < self.size and 0 <= p.y < self.size:
+                if 0 <= p.x < self.size.x and 0 <= p.y < self.size.y:
                     cleaned_ans.append(p)
             ans = cleaned_ans
 
@@ -81,7 +81,7 @@ class DictGrid:
         if self.bounded:
             cleaned_ans = []
             for p in ans:
-                if 0 <= p.x < self.size and 0 <= p.y < self.size:
+                if 0 <= p.x < self.size.x and 0 <= p.y < self.size.y:
                     cleaned_ans.append(p)
             ans = cleaned_ans
 
