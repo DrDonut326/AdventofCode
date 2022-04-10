@@ -1,0 +1,259 @@
+def get_input():
+    ans = []
+    with open("input.txt") as f:
+        for line in f:
+            line = line.rstrip()
+            left, right = line.split(' | ')
+            left = [x for x in left.split()]
+            right = [x for x in right.split()]
+            ans.append((left, right))
+    return ans
+
+def get_empty_display():
+    display = {}
+    sides = ['t', 'tl', 'tr', 'm', 'bl', 'br', 'b']
+    for s in sides:
+        display[s] = None
+    return display
+
+def display_occurences(digits):
+    for letter in list('abcdefg'):
+        print(f"{letter} = {count_occurence(digits, letter)}")
+
+def get_code_with_length_n(digits, n):
+    for d in digits:
+        if len(d) == n:
+            return d
+    raise Exception("Bad length.")
+
+
+def count_occurence(digits, letter):
+    # Returns how often that letter shows up in all digits
+    count = 0
+    for digit in digits:
+        if letter in digit:
+            count += 1
+    return count
+
+def get_letter_with_n_occurences(digits, n):
+    for letter in list('abcdefg'):
+        count = count_occurence(digits, letter)
+        if count == n:
+            return letter
+    raise Exception("Couldn't find that many occurences.")
+
+def find_br(d_dict, digits):
+    # Find the letter that appears 9 times
+    f = get_letter_with_n_occurences(digits, 9)
+    d_dict['br'] = f
+
+def find_tl(d_dict, digits):
+    # Find the letter that appears 9 times
+    f = get_letter_with_n_occurences(digits, 6)
+    d_dict['tl'] = f
+
+def find_bl(d_dict, digits):
+    # Find the letter that appears 9 times
+    f = get_letter_with_n_occurences(digits, 4)
+    d_dict['bl'] = f
+
+def find_tr(d_dict, digits):
+    # Get Number with length 2
+    one_code = get_code_with_length_n(digits, 2)
+    one_code = one_code.replace(d_dict['br'], '')
+    # The side the is not bottom right is top right
+    d_dict['tr'] = one_code
+
+def find_t(d_dict, digits):
+    # Get Number with length 2
+    one_code = get_code_with_length_n(digits, 3)
+    one_code = one_code.replace(d_dict['br'], '')
+    one_code = one_code.replace(d_dict['tr'], '')
+    # The side the is not bottom right is top right
+    d_dict['t'] = one_code
+
+def find_m(d_dict, digits):
+    # Get Number with length 2
+    one_code = get_code_with_length_n(digits, 4)
+    one_code = one_code.replace(d_dict['br'], '')
+    one_code = one_code.replace(d_dict['tr'], '')
+    one_code = one_code.replace(d_dict['tl'], '')
+    # The side the is not bottom right is top right
+    d_dict['m'] = one_code
+
+def find_b(d_dict):
+    # The last remaining unkown = bottom
+    letters = 'abcdefg'
+    for letter in d_dict.values():
+        if letter is not None:
+            letters = letters.replace(letter, '')
+    d_dict['b'] = letters
+
+def find_sides(d_dict, digits):
+    # Updates the dictionary as it finds sides
+    find_br(d_dict, digits)
+    find_tl(d_dict, digits)
+    find_bl(d_dict, digits)
+    find_tr(d_dict, digits)
+    find_t(d_dict, digits)
+    find_m(d_dict, digits)
+    find_b(d_dict)
+
+def build_ans_key(d_dict):
+    ans = {}
+    for side, letter in d_dict.items():
+        ans[letter] = side
+    return ans
+
+def is_0(code):
+    num = ['t', 'tl', 'tr', 'bl', 'br', 'b']
+    if len(code) == len(num):
+        for z in num:
+            if z not in code:
+                return False
+        return True
+    else:
+        return False
+
+def is_1(code):
+    num = ['tr', 'br']
+    if len(code) == len(num):
+        for z in num:
+            if z not in code:
+                return False
+        return True
+    else:
+        return False
+
+def is_2(code):
+    num = ['t', 'tr', 'm', 'bl', 'b']
+    if len(code) == len(num):
+        for z in num:
+            if z not in code:
+                return False
+        return True
+    else:
+        return False
+
+def is_3(code):
+    num = ['t', 'tr', 'm', 'br', 'b']
+    if len(code) == len(num):
+        for z in num:
+            if z not in code:
+                return False
+        return True
+    else:
+        return False
+
+def is_4(code):
+    num = ['tl', 'tr', 'm', 'br']
+    if len(code) == len(num):
+        for z in num:
+            if z not in code:
+                return False
+        return True
+    else:
+        return False
+
+def is_5(code):
+    num = ['t', 'tl', 'm', 'br', 'b']
+    if len(code) == len(num):
+        for z in num:
+            if z not in code:
+                return False
+        return True
+    else:
+        return False
+
+def is_6(code):
+    num = ['t', 'tl', 'm', 'bl', 'br', 'b']
+    if len(code) == len(num):
+        for z in num:
+            if z not in code:
+                return False
+        return True
+    else:
+        return False
+
+def is_7(code):
+    num = ['t', 'tr', 'br']
+    if len(code) == len(num):
+        for z in num:
+            if z not in code:
+                return False
+        return True
+    else:
+        return False
+
+def is_8(code):
+    num = ['t', 'tl', 'tr', 'm', 'bl', 'br', 'b']
+    if len(code) == len(num):
+        for z in num:
+            if z not in code:
+                return False
+        return True
+    else:
+        return False
+
+def is_9(code):
+    num = ['t', 'tl', 'tr', 'm', 'br', 'b', ]
+    if len(code) == len(num):
+        for z in num:
+            if z not in code:
+                return False
+        return True
+    else:
+        return False
+
+
+
+def get_digit(code):
+    # Returns what numeral coresponds to the given side code
+    # Takes in an array of sides
+    if is_0(code):
+        return 0
+    if is_1(code):
+        return 1
+    if is_2(code):
+        return 2
+    if is_3(code):
+        return 3
+    if is_4(code):
+        return 4
+    if is_5(code):
+        return 5
+    if is_6(code):
+        return 6
+    if is_7(code):
+        return 7
+    if is_8(code):
+        return 8
+    if is_9(code):
+        return 9
+
+
+def decode_digits(ans_key, codes):
+    # Returns an array of the decoded numbers
+    ans = []
+    for code in codes:
+        s = []
+        for letter in code:
+            s.append(ans_key[letter])
+        ans.append(get_digit(s))
+    return ans
+
+
+def main():
+    lines = get_input()
+    ans = 0
+    for line in lines:
+        digits, codes = line
+        display_dict = get_empty_display()
+        find_sides(display_dict, digits)
+        ans_key = build_ans_key(display_dict)
+        decoded_digits = decode_digits(ans_key, codes)
+        num = int(''.join(map(str, decoded_digits)))
+        ans += num
+    print(ans)
+
+main()
