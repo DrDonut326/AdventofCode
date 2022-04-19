@@ -1,5 +1,6 @@
 from collections import defaultdict
 from Pos import Pos
+from queue import Queue
 
 class DictGrid:
     """
@@ -46,8 +47,8 @@ class DictGrid:
         If exist is True, only pre-existing neighbors"""
         ans = []
         for d in self.four_way_directions:
-            nx = pos[0] + d[0]
-            ny = pos[1] + d[1]
+            nx = pos.x + d[0]
+            ny = pos.y + d[1]
             ans.append(Pos(nx, ny))
 
         # Clean answers: Step 1.  If the grid is bounded, trip OOB
@@ -131,3 +132,40 @@ class DictGrid:
                     row.append('.')
             print(row)
         print('-' * 25)
+
+    def get_value_from_pos_object(self, pos):
+        name = self.get_string_pos_key(pos)
+        return self.grid[name]
+
+    def flood_neighbors(self, pos, wall, visited):
+        """Returns a neighbors list pruned by visited and wall"""
+        neighbors = self.get_neighbors_4way(pos, exist=True)
+        ans = []
+        for p in neighbors:
+            # Prune for visited
+            if p not in visited:
+                # Prune for wall (if applicable)
+                if wall is not None:
+                    if self.get_value_from_pos_object(p) != wall:
+                        ans.append(p)
+        return ans
+
+    def flood(self, start_pos, wall=None):
+        """Floods outwards from the starting position
+        Does not pass through tiles equaling 'wall'
+        Returns a list of positions."""
+        visited = []
+        q = Queue()
+
+        visited.append(start_pos)
+        q.put(start_pos)
+
+        while not q.empty():
+            s = q.get()
+            s_neighbors = self.flood_neighbors(s, wall, visited)
+            for neighbor in s_neighbors:
+                if neighbor not in visited:
+                    visited.append(neighbor)
+                    q.put(neighbor)
+
+        return visited

@@ -2,7 +2,7 @@
 from functools import reduce
 
 
-def get_input(line_or_char, text_location='input.txt', do_split=False, split_key='', early_stop=False, stop_char=''):
+def get_input(line_or_char, text_location='input.txt', do_split=False, split_key='', early_stop=False, stop_char='', int_convert=False):
     """Gets the input, and spits it into a list
     By default goes line-by-line
     Kwargs to control special features"""
@@ -17,7 +17,10 @@ def get_input(line_or_char, text_location='input.txt', do_split=False, split_key
             if do_split:
                 line = line.split(split_key)
             if line_or_char == 'line':
-                ans.append(line)
+                if int_convert:
+                    ans.append(int(line))
+                else:
+                    ans.append(line)
             else:
                 for element in line:
                     ans.append(element)
