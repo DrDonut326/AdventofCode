@@ -38,6 +38,8 @@ class DictGrid:
             self.grid[pos.get_name()] += data
         elif self.datatype == str:
             self.grid[pos.get_name()] = data
+        elif self.datatype is None:
+            self.grid[pos.get_name()] = data
         else:
             raise NotImplemented(f"Datatype of {self.datatype} not implemented yet.")
 
@@ -74,8 +76,8 @@ class DictGrid:
         If exist is True, only pre-existing neighbors"""
         ans = []
         for d in self.eight_way_directions:
-            nx = pos[0] + d[0]
-            ny = pos[1] + d[1]
+            nx = pos.x + d[0]
+            ny = pos.y + d[1]
             ans.append(Pos(nx, ny))
 
         # Clean answers: Step 1.  If the grid is bounded, trip OOB
