@@ -1,6 +1,8 @@
 from collections import defaultdict
 from Pos import Pos
 from queue import Queue
+from math import inf
+
 
 class DictGrid:
     """
@@ -104,6 +106,11 @@ class DictGrid:
         y = int(y)
         return x, y
 
+    def get_pos_from_string_key(self, key):
+        x, y = self.parse_pos_string(key)
+        pos = Pos(x, y)
+        return pos
+
     def get_graph_min_max(self):
         min_x = None
         min_y = None
@@ -171,3 +178,109 @@ class DictGrid:
                     q.put(neighbor)
 
         return visited
+
+    def add_2D_array_to_grid(self, arr):
+        """Converts the array to x, y position and adds it to this graph"""
+        for y, row in enumerate(arr):
+            for x, element in enumerate(row):
+                p = Pos(x, y)
+                self.add_data_to_grid_at_pos(element, p)
+
+    def make_pos_from_x_y(self, x, y):
+        ans = Pos(x, y)
+        return ans
+
+    def get_costs(self, start):
+        # Dictionary of positions: cost
+        ans = defaultdict(int)
+
+        # Iterate and create
+        for pos in self.grid:
+            ans[pos] = inf
+
+        # Set the starting position to value 0
+        ans[start.get_name()] = 0
+
+        return ans
+
+    def get_smallest_cost(self, costs, visited):
+        """Returns the position of the lowest cost
+        that has not yet been visited"""
+        items = costs.items()
+        ans = ''
+        best = inf
+
+        # Iterate through items, noting down the smallest
+        for pos, cost in items:
+            if pos not in visited and cost < best:
+                ans = pos
+                best = cost
+
+        return ans
+
+
+    def get_adjacency_graph(self):
+        """Returns a graph that shows what positions are connected to each other"""
+        ans = defaultdict(list)
+        for pos in self.grid:
+            pos_ob = self.get_pos_from_string_key(pos)
+            # Get list of neighbor pos objects
+            neighbors = self.get_neighbors_4way(pos_ob, True)
+
+            # Add each neighbor to the adjacency graph
+            for neighbor in neighbors:
+                ans[pos].append(neighbor.get_name())
+
+        return ans
+
+    def update_costs(self, pos, costs, adjacent):
+        """Updates each neighbor of pos if the current cost is less than previous"""
+        current_pos_cost = costs[pos]
+
+        neighbors = adjacent[pos]
+
+        for neighbor in neighbors:
+            # Get the cost of travel to that node
+            travel_cost = current_pos_cost + self.grid[neighbor]
+
+            # Get the current cost
+            current_cost = costs[neighbor]
+
+            # Compare with the current node
+            if travel_cost < current_cost:
+                # Update the costs
+                costs[neighbor] = travel_cost
+
+
+
+
+    def dijkstra(self, start: Pos, finish: Pos):
+        print("Finding shortest path...")
+        # Create cost dictionary
+        costs = self.get_costs(start)
+
+        # Create adjecenty graph
+        adjacent = self.get_adjacency_graph()
+
+        # Create a visited set
+        visited = set()
+
+        while len(visited) < len(costs):
+            # Get the smallest cost
+            smallest_cost_pos = self.get_smallest_cost(costs, visited)
+
+            # Add to visited
+            visited.add(smallest_cost_pos)
+
+            # Update costs
+            self.update_costs(smallest_cost_pos, costs, adjacent)
+
+            # Check for finish
+            if costs[finish.get_name()] < inf:
+                return costs[finish.get_name()]
+
+
+
+
+
+
