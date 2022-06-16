@@ -18,14 +18,20 @@ def get_input(line_or_char, text_location='input.txt', do_split=False, split_key
                 line = line.split(split_key)
             if line_or_char == 'line':
                 if int_convert:
-                    ans.append(int(line))
+                    if type(line) == list:
+                        ans.append([int(x) for x in line])
+                    else:
+                        ans.append(int(line))
                 elif int_split:
                     ans.append([int(x) for x in list(line)])
                 else:
                     ans.append(line)
             else:
                 for element in line:
-                    ans.append(element)
+                    if int_convert:
+                        ans.append(int(element))
+                    else:
+                        ans.append(element)
     return ans
 
 
