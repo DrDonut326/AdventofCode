@@ -12,12 +12,10 @@ class DictGrid:
     Grid dictionary is using with pos objects converted to string data for keys
     Works with Pos objects.  Use pos.get_name() for the string rep
     """
-    def __init__(self, datatype=list, size=None):
-        if size is not None:
-            self.bounded = True
-            self.size = size
-        else:
-            self.bounded = False
+    def __init__(self, datatype=list, bounded=True, x_size=None, y_size=None):
+        self.bounded = bounded
+        self.x_size = x_size
+        self.y_size = y_size
         self.datatype = datatype
         self.grid = defaultdict(datatype)
         # (dx, dy) pairs for navigating
@@ -50,16 +48,17 @@ class DictGrid:
         If the array is bounded, only in-bounds neighbors
         If exist is True, only pre-existing neighbors"""
         ans = []
+        # Get all possible new directions
         for d in self.four_way_directions:
             nx = pos.x + d[0]
             ny = pos.y + d[1]
             ans.append(Pos(nx, ny))
 
-        # Clean answers: Step 1.  If the grid is bounded, trip OOB
+        # If the grid has a max size, make sure it is under that
         if self.bounded:
             cleaned_ans = []
             for p in ans:
-                if 0 <= p.x < self.size.x and 0 <= p.y < self.size.y:
+                if 0 <= p.x < self.x_size and 0 <= p.y < self.y_size:
                     cleaned_ans.append(p)
             ans = cleaned_ans
 
@@ -146,27 +145,37 @@ class DictGrid:
         name = self.get_string_pos_key(pos)
         return self.grid[name]
 
-    def flood_neighbors(self, pos, wall, visited):
+    def flood_neighbors(self, pos, wall, visited, master_visited=None):
         """Returns a neighbors list pruned by visited and wall"""
         neighbors = self.get_neighbors_4way(pos, exist=True)
+        if master_visited is None:
+            master_visited = set()
         ans = []
         for p in neighbors:
-            # Prune for visited
-            if p not in visited:
+            # Prune for visited + master visited
+            if p not in visited and p not in master_visited:
                 # Prune for wall (if applicable)
                 if wall is not None:
                     if self.get_value_from_pos_object(p) != wall:
                         ans.append(p)
         return ans
 
-    def flood(self, start_pos, wall=None):
+    def flood(self, start_pos, wall=None, master_visited=None):
         """Floods outwards from the starting position
         Does not pass through tiles equaling 'wall'
         Returns a list of positions."""
-        visited = []
+
+        # If this position is itself a wall, return an empty set
+        if self.get_value_from_pos_object(start_pos) == wall:
+            return []
+
+        visited = set()
+        if master_visited is None:
+            master_visited = set()
         q = Queue()
 
-        visited.append(start_pos)
+        visited.add(start_pos)
+        master_visited.add(start_pos)
         q.put(start_pos)
 
         while not q.empty():
@@ -174,10 +183,34 @@ class DictGrid:
             s_neighbors = self.flood_neighbors(s, wall, visited)
             for neighbor in s_neighbors:
                 if neighbor not in visited:
-                    visited.append(neighbor)
+                    visited.add(neighbor)
+                    master_visited.add(neighbor)
                     q.put(neighbor)
 
         return visited
+
+    def get_regions(self, wall):
+        """Returns a list of all regions and their positions"""
+        master_visited = set()
+        regions = []
+        # Iterate through all positions on the grid
+        # Ignoring those already found in master_visited
+        for y in range(self.y_size):
+            for x in range(self.x_size):
+
+                # Create a pos object
+                pos = Pos(x, y)
+
+                # Skip if you're starting on a wall
+                if self.get_value_from_pos_object(pos) != wall:
+
+                    # See if the pos object is already visited
+                    if pos not in master_visited:
+                        flood = self.flood(pos, wall, master_visited)
+                        assert len(flood) > 0
+                        regions.append(flood)
+
+        return regions
 
     def add_2D_array_to_grid(self, arr):
         """Converts the array to x, y position and adds it to this graph"""
@@ -218,7 +251,6 @@ class DictGrid:
 
         return ans
 
-
     def get_adjacency_graph(self):
         """Returns a graph that shows what positions are connected to each other"""
         ans = defaultdict(list)
@@ -250,9 +282,6 @@ class DictGrid:
             if travel_cost < current_cost:
                 # Update the costs
                 costs[neighbor] = travel_cost
-
-
-
 
     def dijkstra(self, start: Pos, finish: Pos):
         print("Finding shortest path...")

@@ -102,7 +102,7 @@ def part_1():
     i = 0
     skip_size = 0
     final_list = knot_hash(i, skip_size, puzzle_input, list_length)
-    print(final_list[0] * final_list[1])
+    return final_list[0] * final_list[1]
 
 
 def get_hex_string(dense_hash):
@@ -124,7 +124,7 @@ def part_2(puzzle_input):
 
     hex_string = get_hex_string(dense_hash)
 
-    print(hex_string)
+    return hex_string
 
 
 def main():
@@ -132,4 +132,5 @@ def main():
     part_2('46,41,212,83,1,255,157,65,139,52,39,254,2,86,0,204')  # Part 2 answer
 
 
-main()
+if __name__ == '__main__':
+    main()

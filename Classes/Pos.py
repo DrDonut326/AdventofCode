@@ -11,6 +11,9 @@ class Pos:
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
+    def __hash__(self):
+        return hash(self.__repr__())
+
     def get_name(self):
         """Return a string version of current position"""
         return f"{self.x}X | {self.y}Y"
