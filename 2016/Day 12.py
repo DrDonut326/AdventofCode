@@ -24,6 +24,10 @@ class Bunnycomp:
             elif command == 'jnz':
                 x, y = variables
                 self.jnz(x, y)
+            elif command == 'tgl':
+                x = variables[0]
+                self.tgl(x)
+
 
     def cpy(self, x, y):
         if type(x) == int:
@@ -52,6 +56,11 @@ class Bunnycomp:
                 self.pointer += y
             else:
                 self.pointer += 1
+
+    def tgl(self, x):
+        modified_pointer = self.pointer + x
+        instruction_to_change = self.codes[modified_pointer]
+        
 
 
 def build_codes():
