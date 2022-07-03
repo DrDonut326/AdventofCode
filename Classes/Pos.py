@@ -6,14 +6,17 @@ class Pos:
         self.z = z
 
     def __repr__(self):
-        return f"{self.x} // {self.y}"
+        return f"X:{self.x} Y:{self.y}"
+
+    def hash_key(self):
+        return f"H:{self.x}/{self.y}"
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
     def __hash__(self):
-        return hash(self.__repr__())
+        return hash(self.hash_key())
 
     def get_name(self):
         """Return a string version of current position"""
-        return f"{self.x}X | {self.y}Y"
+        return self.__repr__()
