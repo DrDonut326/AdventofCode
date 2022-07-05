@@ -70,7 +70,7 @@ class DictGrid:
         # Prune for visited
         if visited is not None:
             assert type(visited) == set
-            ans = [x for x in ans if ans not in visited]
+            ans = [x for x in ans if x not in visited]
 
         return ans
 
@@ -133,7 +133,7 @@ class DictGrid:
                 if t in self.grid:
                     print(self.grid[t], end='')
                 else:
-                    print(self.grid[t], end='')
+                    print('.', end='')
             print()
         print('-' * 25)
 
