@@ -1,6 +1,7 @@
 # Utility methods for quickly import data
 from functools import reduce
 from Pos import Pos
+from anytree import RenderTree
 
 
 def get_input(line_or_char, text_location='input.txt', do_split=False, split_key='', early_stop=False, stop_char='', int_convert=False, int_split=False):
@@ -79,3 +80,8 @@ def manhat(a, b=(0, 0)):
 def manhat_pos(a, b=Pos(0, 0)):
     """Manhatten distance for Pos objects"""
     return abs(a.x - b.x) + abs(a.y - b.y)
+
+
+def render_a_tree(root):
+    for pre, _, node in RenderTree(root):
+        print("%s%s" % (pre, node.name))
