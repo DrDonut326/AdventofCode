@@ -7,7 +7,10 @@ class Pos:
         self.__dict__.update(kwargs)
 
     def __repr__(self):
-        return f"X:{self.x} Y:{self.y}"
+        ans = []
+        for key in self.__dict__:
+            ans.append(f'{key}: {self.__dict__[key]}, ')
+        return ''.join(ans)[:-2]
 
     def hash_key(self):
         return f"H:{self.x}/{self.y}"

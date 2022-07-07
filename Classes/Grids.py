@@ -124,14 +124,17 @@ class DictGrid:
                 max_y = y
         return min_x, max_x, min_y, max_y
 
-    def display_grid_ascii(self):
+    def display_grid_ascii(self, data_override=None):
         print('-' * 25)
         min_x, max_x, min_y, max_y = self.get_graph_min_max()
         for y in range(min_y, max_y + 1):
             for x in range(min_x, max_x + 1):
                 t = Pos(x, y)
                 if t in self.grid:
-                    print(self.grid[t], end='')
+                    if data_override is None:
+                        print(self.grid[t], end='')
+                    else:
+                        print(data_override, end='')
                 else:
                     print('.', end='')
             print()
