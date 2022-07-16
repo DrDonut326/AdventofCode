@@ -1,5 +1,5 @@
 from itertools import combinations_with_replacement as comb
-from Utility import get_input
+from Functions import get_input
 from time import time
 
 

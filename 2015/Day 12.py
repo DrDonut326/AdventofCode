@@ -1,5 +1,5 @@
 import json
-from Utility import get_input
+from Functions import get_input
 
 
 def add_up(data):

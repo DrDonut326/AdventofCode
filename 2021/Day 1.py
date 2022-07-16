@@ -1,6 +1,6 @@
 from token import NAME
 
-from Utility import get_input
+from Functions import get_input
 
 
 def main():

@@ -1,6 +1,6 @@
 from collections import defaultdict
 from Pos import Pos
-from Utility import get_input
+from Functions import get_input
 from queue import Queue as q
 
 

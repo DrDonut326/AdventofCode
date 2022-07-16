@@ -1,5 +1,5 @@
 from collections import deque
-from Utility import get_input
+from Functions import get_input
 
 
 def make_grid(width, height):

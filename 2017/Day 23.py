@@ -1,6 +1,6 @@
 from collections import defaultdict
 from queue import Queue
-from Utility import get_input
+from Functions import get_input
 
 
 class Dueter:

@@ -1,4 +1,4 @@
-from Utility import get_input, manhat_pos
+from Functions import get_input, manhat_pos
 from collections import defaultdict
 from Pos import Pos
 from Grids import DictGrid

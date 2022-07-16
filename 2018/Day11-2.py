@@ -1,5 +1,5 @@
 # Rework of Day 11 with COMPUTER SCIENCE MAGIC
-from Utility import Pos
+from Functions import Pos
 from functools import lru_cache
 
 

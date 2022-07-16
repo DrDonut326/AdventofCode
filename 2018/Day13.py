@@ -1,4 +1,4 @@
-from Utility import Pos
+from Functions import Pos
 from os import system
 
 

@@ -1,4 +1,4 @@
-from Utility import get_input
+from Functions import get_input
 from collections import defaultdict
 
 def count_letters_in_string(x: str):
