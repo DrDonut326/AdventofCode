@@ -1,5 +1,5 @@
 from Functions import get_input
-from collections import defaultdict
+
 
 class Sue:
     def __init__(self, name, data):

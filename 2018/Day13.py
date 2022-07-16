@@ -1,5 +1,6 @@
-from Functions import Pos
 from os import system
+
+from Functions import Pos
 
 
 class Minecart:

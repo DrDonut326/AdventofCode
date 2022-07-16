@@ -1,5 +1,6 @@
-from Functions import Pos
 from functools import lru_cache
+
+from Functions import Pos
 
 
 @lru_cache()

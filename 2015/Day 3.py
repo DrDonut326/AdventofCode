@@ -1,7 +1,8 @@
 from collections import defaultdict
-from Pos import Pos
-from Functions import get_input
 from queue import Queue as q
+
+from Functions import get_input
+from Pos import Pos
 
 
 def move_santa(command, santa):

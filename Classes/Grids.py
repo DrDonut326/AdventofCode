@@ -1,9 +1,53 @@
 from collections import defaultdict
-from Pos import Pos
-from queue import Queue
 from math import inf
+from queue import Queue
+from functools import lru_cache
 
-# TODO: Remove get neighbors and let pos objects handle that
+from Pos import Pos
+
+class ArrayGrid:
+    """Regular 2D array with a fixed size."""
+    # If position tuples need to find their neighbors
+    four_way_directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    eight_way_directions = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
+
+    def __init__(self, grid: list, walls=None):
+        self.grid = grid
+        self.walls=walls
+
+    def display_grid_ascii(self, data_override=None):
+        print('-' * 25)
+        for y, row in enumerate(self.grid):
+            for x, element in enumerate(row):
+                if data_override is None:
+                    print(element, end='')
+                else:
+                    print(data_override, end='')
+            print('')
+        print('-' * 25)
+
+
+    def get_neighbors_4way(self, x, y):
+        """Returns neighboring positions for adjacent directions only."""
+        # Get all possible new directions
+        pos_list = []
+        for d in self.four_way_directions:
+            nx = x + d[0]
+            ny = y + d[1]
+            pos_list.append((nx, ny))
+
+        return pos_list
+
+    def get_neighbors_8way(self, x, y):
+        """Returns neighboring positions for adjacent and diagonal neighbors."""
+        # Get all possible new directions
+        pos_list = []
+        for d in self.eight_way_directions:
+            nx = x + d[0]
+            ny = y + d[1]
+            pos_list.append((nx, ny))
+        return pos_list
+
 
 class DictGrid:
     """

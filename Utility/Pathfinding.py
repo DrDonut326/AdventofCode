@@ -1,6 +1,7 @@
+from collections import deque
+
 from Functions import Pos
-from Grids import DictGrid
-from queue import Queue
+from Grids import DictGrid, ArrayGrid
 
 
 class Node:
@@ -47,22 +48,45 @@ def get_test_input():
     return grid, start, finish
 
 
-def dijkstra(grid: DictGrid, start: Pos):
-    """Creates a cost grid that radiates out from start"""
-    q = Queue()
-    q.put(start)
+def bfs(grid: ArrayGrid, x: int, y: int):
+    """Creates a bfs cost grid using a simple 2D array."""
+    q = deque()
+    q.append((x, y))
+    distance = dict()
+    distance[(x, y)] = 0
+
+    while q:
+        # Tuples of position of (x, y)
+        x, y = q.popleft()
+        for next_pos in grid.get_neighbors_4way(x, y):
+            nx, ny = next_pos
+            # Check if in visited already
+            if next_pos not in distance:
+                # Check if that element in walls
+                if grid.grid[ny][nx] not in grid.walls:
+                    q.append(next_pos)
+                    distance[next_pos] = 1 + distance[(x, y)]
+
+    return distance
+
+
+
+def bfs_dictgrid(grid: DictGrid, start: Pos):
+    """Creates a cost grid that radiates out from the starting position.  Searches all possible cells."""
+    q = deque()
+    q.append(start)
     distance = dict()
     distance[start] = 0
 
-    while not q.empty():
+    while q:
         current_pos: Pos
-        current_pos = q.get()
+        current_pos = q.popleft()
         for next_pos in current_pos.get_neighbors_4way():
             # Check if in visited already
             if next_pos not in distance:
                 # Check if that element in walls
                 if grid.get_value_from_pos_object(next_pos) not in grid.walls:
-                    q.put(next_pos)
+                    q.append(next_pos)
                     distance[next_pos] = 1 + distance[current_pos]
 
     return distance
@@ -94,7 +118,7 @@ def display_cost_grid(grid, cost_grid):
 
 def main():
     grid, start, finish = get_test_input()
-    cost_grid = dijkstra(grid, start, finish)
+    cost_grid = bfs_dictgrid(grid, start, finish)
     grid.display_grid_with_highlighted_positions_all_same([start, finish], (200, 235, 50))
 
 

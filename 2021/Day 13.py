@@ -1,5 +1,5 @@
-from Pos import Pos
 from Grids import DictGrid
+from Pos import Pos
 
 
 def get_input():

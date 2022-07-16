@@ -1,5 +1,5 @@
-from HexGrid import HexGrid
 from Functions import get_input
+from HexGrid import HexGrid
 
 
 def main():

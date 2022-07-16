@@ -1,5 +1,4 @@
 from Functions import get_input
-from collections import defaultdict
 
 
 def part1():

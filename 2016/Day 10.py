@@ -1,5 +1,6 @@
-from Functions import get_input
 from collections import defaultdict
+
+from Functions import get_input
 
 
 class Bot:

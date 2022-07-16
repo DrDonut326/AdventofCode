@@ -1,4 +1,4 @@
-from Functions import get_input, factors
+from Functions import get_input
 
 
 def greedily_get_not_explored_list(path, nums, k, explored):

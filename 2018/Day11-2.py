@@ -1,7 +1,5 @@
 # Rework of Day 11 with COMPUTER SCIENCE MAGIC
 from Functions import Pos
-from functools import lru_cache
-
 
 
 def get_fuel_power(pos):

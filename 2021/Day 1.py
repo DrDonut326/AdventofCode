@@ -1,5 +1,3 @@
-from token import NAME
-
 from Functions import get_input
 
 

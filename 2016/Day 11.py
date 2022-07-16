@@ -1,7 +1,7 @@
-from queue import PriorityQueue
 from collections import defaultdict
-from itertools import permutations, combinations
 from copy import deepcopy
+from itertools import permutations, combinations
+from queue import PriorityQueue
 from time import time
 
 

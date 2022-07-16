@@ -1,22 +1,20 @@
-# TODO: FIX equality check and represent
-
-
-
 class Pos:
     """A 2d or 3d data class for use with grids"""
+    four_way_directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    eight_way_directions = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
+
     def __init__(self, x, y, z=0, **kwargs):
         self.x = x
         self.y = y
         self.z = z
         self.__dict__.update(kwargs)
-        self.four_way_directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-        self.eight_way_directions = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
+
 
     def __repr__(self):
         return f"({self.x},{self.y})"
 
     def hash_key(self):
-        return f"H:{self.x}/{self.y}"
+        return (self.x, self.y)
 
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y

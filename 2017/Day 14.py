@@ -1,6 +1,5 @@
 from Day10 import part_2
 from Grids import DictGrid
-from Pos import Pos
 
 
 def convert_hex_to_4_bit_binary(x):

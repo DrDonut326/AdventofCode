@@ -1,6 +1,8 @@
 # Every house gets present = 10 times each factor of that number
-from Functions import factors
 from collections import defaultdict
+
+from Functions import factors
+
 
 def part_1(target):
     house_number = 0

@@ -1,7 +1,8 @@
-from Grids import DictGrid
 from dataclasses import dataclass
+
+from Grids import DictGrid
 from Pos import Pos
-from itertools import combinations
+
 
 @dataclass
 class Node:

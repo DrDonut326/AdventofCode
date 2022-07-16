@@ -1,6 +1,7 @@
 from collections import defaultdict
-from Functions import get_input
 from queue import Queue
+
+from Functions import get_input
 
 
 class Route:

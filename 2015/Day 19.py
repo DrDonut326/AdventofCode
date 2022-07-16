@@ -1,4 +1,5 @@
 from collections import defaultdict
+
 from Functions import get_input
 
 

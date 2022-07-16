@@ -1,6 +1,6 @@
-from queue import PriorityQueue
-from hashlib import md5
 from copy import deepcopy
+from hashlib import md5
+from queue import PriorityQueue
 
 
 def get_bytes(s):

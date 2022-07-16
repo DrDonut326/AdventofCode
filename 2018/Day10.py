@@ -1,6 +1,7 @@
-from Pos import Pos
-from Grids import DictGrid
 from collections import defaultdict
+
+from Grids import DictGrid
+from Pos import Pos
 
 
 def get_input():

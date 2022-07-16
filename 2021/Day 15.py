@@ -1,5 +1,5 @@
-from Grids import DictGrid
 from Functions import get_input
+from Grids import DictGrid
 
 
 def wrap_increment(x):

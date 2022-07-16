@@ -1,5 +1,7 @@
-from Functions import get_input
 from collections import deque
+
+from Functions import get_input
+
 
 def get_triangles():
     ans = []

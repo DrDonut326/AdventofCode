@@ -1,6 +1,3 @@
-from Pos import Pos
-
-
 def get_new_tile(a, b, c):
     if '^' not in [a, b, c]:
         return '.'

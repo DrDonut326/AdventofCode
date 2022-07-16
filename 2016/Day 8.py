@@ -1,4 +1,5 @@
 from collections import deque
+
 from Functions import get_input
 
 

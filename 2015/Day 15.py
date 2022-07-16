@@ -1,6 +1,7 @@
 from itertools import combinations_with_replacement as comb
-from Functions import get_input
 from time import time
+
+from Functions import get_input
 
 
 class Ingredient:

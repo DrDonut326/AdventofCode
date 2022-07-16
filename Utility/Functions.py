@@ -1,7 +1,9 @@
 # Utility methods for quickly import data
 from functools import reduce
-from Pos import Pos
+
 from anytree import RenderTree
+
+from Pos import Pos
 
 
 def get_input(line_or_char, text_location='input.txt', do_split=False, split_key='', early_stop=False, stop_char='', int_convert=False, int_split=False):

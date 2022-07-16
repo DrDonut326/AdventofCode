@@ -1,5 +1,6 @@
-from Functions import get_input
 from collections import defaultdict, deque
+
+from Functions import get_input
 
 
 def get_rooms():

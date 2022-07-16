@@ -1,5 +1,7 @@
-from Functions import get_input
 from collections import defaultdict
+
+from Functions import get_input
+
 
 def count_letters_in_string(x: str):
     count = defaultdict(int)

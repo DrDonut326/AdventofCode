@@ -1,10 +1,10 @@
-from Pos import Pos
-from Grids import DictGrid
-from random import choice, randint
-from time import sleep
-from itertools import permutations, combinations
 import os
 from copy import deepcopy
+from itertools import permutations, combinations
+from random import randint
+
+from Grids import DictGrid
+from Pos import Pos
 
 
 # TODO: Check if step dict is actually finishing. Optimize it.
@@ -328,7 +328,7 @@ def get_shortest_path_dict(pairs, grid):
     b: Pos
     for pair in pairs:
         a, b = pair
-        steps = grid.dijkstra(a, b, all_cost=1)
+        steps = grid.bfs_dictgrid(a, b, all_cost=1)
         # Add both versions
         ab_key = str(a) + ' ' + str(b)
         ba_key = str(b) + ' ' + str(a)

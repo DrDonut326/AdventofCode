@@ -1,6 +1,6 @@
 from collections import defaultdict
-from queue import PriorityQueue
 from copy import deepcopy
+from queue import PriorityQueue
 
 
 def get_cubicle_state(x, y):

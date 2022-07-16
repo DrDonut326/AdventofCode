@@ -1,6 +1,7 @@
-from Functions import get_input
 from collections import defaultdict
 from queue import Queue
+
+from Functions import get_input
 
 
 class Duet:

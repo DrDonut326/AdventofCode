@@ -1,6 +1,7 @@
-from Grids import DictGrid
-from Functions import get_input
 from copy import deepcopy
+
+from Functions import get_input
+from Grids import DictGrid
 
 
 def set_corners(grid):

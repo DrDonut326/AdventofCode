@@ -1,7 +1,8 @@
-from Functions import get_input, manhat_pos
 from collections import defaultdict
-from Pos import Pos
+
+from Functions import get_input, manhat_pos
 from Grids import DictGrid
+from Pos import Pos
 
 
 def make_pos_list(nums):

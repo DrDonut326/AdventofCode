@@ -1,7 +1,4 @@
-from anytree import Node, RenderTree, PreOrderIter
-from Functions import render_a_tree
-
-
+from anytree import Node, PreOrderIter
 
 
 # Header is 2 numbers always

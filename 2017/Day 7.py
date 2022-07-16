@@ -1,5 +1,6 @@
 from collections import defaultdict
-from anytree import Node, RenderTree
+
+from anytree import Node
 
 
 def get_input():

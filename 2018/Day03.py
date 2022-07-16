@@ -1,6 +1,6 @@
-from Pos import Pos
-from itertools import combinations
 from collections import defaultdict
+
+from Pos import Pos
 
 
 class Rect:

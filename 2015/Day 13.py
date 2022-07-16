@@ -1,6 +1,7 @@
-from Functions import get_input
 from collections import defaultdict
 from itertools import permutations
+
+from Functions import get_input
 
 
 def parse_line(line):

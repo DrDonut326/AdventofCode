@@ -1,5 +1,6 @@
-import numpy as np
 from math import sqrt
+
+import numpy as np
 
 
 def rule_string_to_2d_array(rule):
