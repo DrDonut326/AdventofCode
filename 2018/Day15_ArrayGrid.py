@@ -1,7 +1,7 @@
 from math import inf
 
-from Grids import ArrayGrid
-from Pathfinding import bfs
+from Classes.Grids import ArrayGrid
+from Utility.Pathfinding import bfs
 
 
 class Creature:
