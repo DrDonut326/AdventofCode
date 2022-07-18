@@ -1,9 +1,9 @@
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 from math import inf
 from queue import Queue
-from functools import lru_cache
 
-from Pos import Pos
+
+
 
 class ArrayGrid:
     """Regular 2D array with a fixed size."""
@@ -50,27 +50,39 @@ class ArrayGrid:
 
 
 class DictGrid:
-    """
-    A grid where locations are only generated as they are explored
-    North or Up is Negative on the y-axis
-    Left or West is Negative on the x-axis
-    """
-    def __init__(self, datatype, walls=None, bounded=True, max_x=None, max_y=None):
-        self.bounded = bounded
+    """Generates new locations as explored.  Positions are tuples of (x, y)"""
+    four_way_directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    eight_way_directions = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
+    def __init__(self, datatype, walls=None, max_x=None, max_y=None):
         self.datatype = datatype
         self.walls = walls
         self.grid = defaultdict(datatype)
-        self.max_x = max_x
-        self.max_y = max_y
-        # (dx, dy) pairs for navigating
 
-    def add_data_to_grid_at_x_y_z(self, data, x, y, z=0):
-        pos = Pos(x, y, z)
-        self.add_data_to_grid_at_pos(pos, data)
+    def get_neighbors_4way(self, x, y):
+        """Returns neighboring positions for adjacent directions only."""
+        # Get all possible new directions
+        pos_list = []
+        for d in self.four_way_directions:
+            nx = x + d[0]
+            ny = y + d[1]
+            pos_list.append((nx, ny))
+
+        return pos_list
+
+    def get_neighbors_8way(self, x, y):
+        """Returns neighboring positions for adjacent and diagonal neighbors."""
+        # Get all possible new directions
+        pos_list = []
+        for d in self.eight_way_directions:
+            nx = x + d[0]
+            ny = y + d[1]
+            pos_list.append((nx, ny))
+        return pos_list
 
     def add_data_to_grid_at_pos(self, pos, data):
         """Handles how data gets added depending on the data type."""
-        assert type(pos) == Pos
+        assert type(pos) == tuple
+
         if self.datatype == list:
             self.grid[pos].append(data)
 
@@ -95,7 +107,7 @@ class DictGrid:
         max_x = None
         max_y = None
         for key in self.grid.keys():
-            x, y = key.x, key.y
+            x, y = key[0], key[1]
             if min_x is None or x < min_x:
                 min_x = x
             if max_x is None or x > max_x:
@@ -111,7 +123,7 @@ class DictGrid:
         min_x, max_x, min_y, max_y = self.get_graph_min_max()
         for y in range(min_y, max_y + 1):
             for x in range(min_x, max_x + 1):
-                t = Pos(x, y)
+                t = (x, y)
                 if t in self.grid:
                     if data_override is None:
                         print(self.grid[t], end='')
@@ -125,9 +137,9 @@ class DictGrid:
     def get_value_from_pos_object(self, pos):
         return self.grid[pos]
 
-    def flood_neighbors(self, pos, visited, master_visited=None):
+    def flood_neighbors(self, pos, visited, master_visited=None):  #TODO: Migrate flood to pathfinding, but smrtr
         """Returns a neighbors list pruned by visited and wall"""
-        neighbors = pos.get_neighbors_4way(pos, exist=True) #TODO: add wall_exception
+        neighbors = self.get_neighbors_4way(pos[0], pos[1])
         if master_visited is None:
             master_visited = set()
         ans = []
@@ -176,7 +188,7 @@ class DictGrid:
             for x in range(self.x_size):
 
                 # Create a pos object
-                pos = Pos(x, y)
+                pos = (x, y)
 
                 # Skip if you're starting on a wall
                 if self.get_value_from_pos_object(pos) != wall:
@@ -193,11 +205,11 @@ class DictGrid:
         """Converts the array to x, y position and adds it to this graph"""
         for y, row in enumerate(arr):
             for x, element in enumerate(row):
-                p = Pos(x, y)
+                p = (x, y)
                 self.add_data_to_grid_at_pos(p, element)
 
     def make_pos_from_x_y(self, x, y):
-        ans = Pos(x, y)
+        ans = (x, y)
         return ans
 
     def get_costs(self, start):
@@ -228,7 +240,7 @@ class DictGrid:
         min_x, max_x, min_y, max_y = self.get_graph_min_max()
         for y in range(min_y, max_y + 1):
             for x in range(min_x, max_x + 1):
-                pos = Pos(x, y)
+                pos = (x, y)
                 if pos in self.grid:
                     element = str(self.grid[pos])
                     if element in rgb_dict:
@@ -247,7 +259,7 @@ class DictGrid:
         min_x, max_x, min_y, max_y = self.get_graph_min_max()
         for y in range(min_y, max_y + 1):
             for x in range(min_x, max_x + 1):
-                pos = Pos(x, y)
+                pos = (x, y)
                 if pos in self.grid:
                     element = str(self.grid[pos])
                     if pos in rgb_dict:
@@ -266,7 +278,7 @@ class DictGrid:
         min_x, max_x, min_y, max_y = self.get_graph_min_max()
         for y in range(min_y, max_y + 1):
             for x in range(min_x, max_x + 1):
-                pos = Pos(x, y)
+                pos = (x, y)
                 if pos in self.grid:
                     element = str(self.grid[pos])
                     if pos in positions:
@@ -285,4 +297,4 @@ class DictGrid:
         self.y_size = sizes[3] + 1
 
 
-
+Point = namedtuple('Point', 'x y z')
