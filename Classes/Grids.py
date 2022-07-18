@@ -15,6 +15,22 @@ class ArrayGrid:
         self.grid = grid
         self.walls=walls
 
+    def colored(self, r, g, b, text):
+        return f"\033[38;2;{r};{g};{b}m{text}\033[0m"
+
+    def is_in_bounds(self, pos):
+        x, y = pos
+        # Check y first
+        if y < 0:
+            return False
+        if y >= len(self.grid):
+            return False
+        if x < 0:
+            return False
+        if x >= len(self.grid[y]):
+            return False
+        return True
+
     def display_grid_ascii(self, data_override=None):
         print('-' * 25)
         for y, row in enumerate(self.grid):
@@ -26,6 +42,18 @@ class ArrayGrid:
             print('')
         print('-' * 25)
 
+    def display_grid_with_highlighted_values(self, rgb_dict):
+        """Highlights all values in dict according to the given dictionary [value]: color_tuple"""
+        print('-' * 25)
+        for row in self.grid:
+            for element in row:
+                if element in rgb_dict:
+                        r, g, b = rgb_dict[element]
+                        print(self.colored(r, g, b, element), end='')
+                else:
+                    print(element, end='')
+            print()
+        print('-' * 25)
 
     def get_neighbors_4way(self, x, y):
         """Returns neighboring positions for adjacent directions only."""
