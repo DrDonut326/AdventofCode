@@ -71,7 +71,7 @@ def bfs(grid: ArrayGrid, x: int, y: int):
 
 
 
-def bfs_dictgrid(grid: DictGrid, start: Pos):
+def bfs_dictgrid(grid: DictGrid, start: tuple):
     """Creates a cost grid that radiates out from the starting position.  Searches all possible cells."""
     q = deque()
     q.append(start)
@@ -79,9 +79,8 @@ def bfs_dictgrid(grid: DictGrid, start: Pos):
     distance[start] = 0
 
     while q:
-        current_pos: Pos
         current_pos = q.popleft()
-        for next_pos in current_pos.get_neighbors_4way():
+        for next_pos in grid.get_neighbors_4way(current_pos[0], current_pos[1], exist_prune=True):
             # Check if in visited already
             if next_pos not in distance:
                 # Check if that element in walls
@@ -97,7 +96,7 @@ def display_cost_grid(grid, cost_grid):
     min_x, max_x, min_y, max_y = grid.get_graph_min_max()
     for y in range(min_y, max_y + 1):
         for x in range(min_x, max_x + 1):
-            pos = Pos(x, y)
+            pos = (x, y)
             # If this position in the grid
             if pos in grid.grid:
                 # If this position in the cost grid

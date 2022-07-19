@@ -83,10 +83,13 @@ class DictGrid:
     eight_way_directions = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
     def __init__(self, datatype, walls=None, max_x=None, max_y=None):
         self.datatype = datatype
-        self.walls = walls
+        if walls is None:
+            self.walls = set()
+        else:
+            self.walls = walls
         self.grid = defaultdict(datatype)
 
-    def get_neighbors_4way(self, x, y):
+    def get_neighbors_4way(self, x, y, exist_prune=False):
         """Returns neighboring positions for adjacent directions only."""
         # Get all possible new directions
         pos_list = []
@@ -94,6 +97,10 @@ class DictGrid:
             nx = x + d[0]
             ny = y + d[1]
             pos_list.append((nx, ny))
+
+        # Option prune for pre-existing
+        if exist_prune:
+            pos_list = [x for x in pos_list if x in self.grid]
 
         return pos_list
 
