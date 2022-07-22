@@ -71,6 +71,7 @@ def find_neighbors_cave(grid: DictGrid, pos: tuple):
 
     # Locate the type of this current position???
     # todo: is this a tuple with cost or what?
+    print(neighbors)
 
 
 def part_1(target, depth):
