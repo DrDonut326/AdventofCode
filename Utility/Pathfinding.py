@@ -12,8 +12,8 @@ class PriorityQueue:
     def empty(self) -> bool:
         return not self.elements
 
-    def put(self, pos, priority):
-        heapq.heappush(self.elements, (priority, pos))
+    def put(self, element, priority):
+        heapq.heappush(self.elements, (priority, element))
 
     def get(self):
         return heapq.heappop(self.elements)[1]
