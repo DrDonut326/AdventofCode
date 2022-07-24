@@ -1,5 +1,5 @@
 from functools import lru_cache
-from Utility.Pathfinding import dijkstra_dictgrid
+from Utility.Pathfinding import dijkstra_dictgrid, rebuild_path
 from Classes.Grids import DictGrid
 
 class Cave:
@@ -34,7 +34,7 @@ class Cave:
         return (self.get_geologic_index(pos) + self.depth) % 20183
 
     @lru_cache(maxsize=None)
-    def get_risk_type(self, pos):
+    def get_terrain_type(self, pos):
         fine_erosion = self.get_erosion_level(pos) % 3
         if fine_erosion == 0:
             return 'rocky'
@@ -50,7 +50,7 @@ class Cave:
         for y in range(0, self.target_pos[1] + 1):
             for x in range(0, self.target_pos[0] + 1):
                 pos = (x, y)
-                total_risk += self.risk_dict[self.get_risk_type(pos)]
+                total_risk += self.risk_dict[self.get_terrain_type(pos)]
         return total_risk
 
     def get_allowable_equipment(self, cave_type):
@@ -63,15 +63,57 @@ class Cave:
 
 
 def find_neighbors_cave(grid: DictGrid, pos: tuple):
-    # Get neighbros
+    """Function that will be passed to the Dijkstra function to find neighbors.
+    Each neighbor will return a tuple of (pos, cost)"""
+    global cave
+    ans = []
+
+    # First add equipment change
+
+    # Get the current positions terrain type
+    current_terrain = cave.get_terrain_type((pos[0], pos[1]))
+
+    # Find what equipment is allowed there
+    current_allow_equip = cave.get_allowable_equipment(current_terrain)
+
+    # Add the one you don't have equipped
+    for equip in current_allow_equip:
+        if equip != pos[2]:
+
+            # Add this equipment to the answer
+            new_pos = (pos[0], pos[1], equip)
+            cost = 7
+            ans.append((new_pos, cost))
+
+    # Now get neighbors of the current position
+    # that the current equipment are allowed in
+
+    # Get 2d neighbors of this position
     neighbors = grid.get_neighbors_4way(pos[0], pos[1])
 
     # Prune < 0
-    neighbors = [n for n in neighbors if n[0] >= 0 and n[1] >=0]
+    neighbors = [n for n in neighbors if n[0] >= 0 and n[1] >= 0]
 
-    # Locate the type of this current position???
-    # todo: is this a tuple with cost or what?
-    print(neighbors)
+    for neighbor in neighbors:
+        # Get terrain type
+        terrain_type = cave.get_terrain_type((neighbor[0], neighbor[1]))
+
+        # Get the allowable equipment
+        allow_equip = cave.get_allowable_equipment(terrain_type)
+
+        # Get the current equipped numbed
+        currently_equipped = pos[2]
+
+        # If the currently equipped item is allowed in the next zone, add it to neighbors
+        if currently_equipped in allow_equip:
+
+            # Make new position
+            new_pos = (neighbor[0], neighbor[1], currently_equipped)
+            cost = 1
+            priority = (new_pos, cost)
+            ans.append(priority)
+
+    return ans
 
 
 def part_1(target, depth):
@@ -80,31 +122,12 @@ def part_1(target, depth):
     return cave
 
 
-def add_locations_to_grid(grid: DictGrid, cave: Cave, pos: tuple):
-    """Given a location in the cave, adds appropriate z level dimensions to it."""
-    # 0 = neither equipment
-    # 1 = torch
-    # 2 = climbing gear
-
-    # Get the type of this location
-    cave_type = cave.get_risk_type(pos)
-
-    # Get allowable equipment numbers
-    equip_nums = cave.get_allowable_equipment(cave_type)
-
-    # Add each equipment number as a z value to the tuple
-    for equip in equip_nums:
-        cave_pos = (pos[0], pos[1], equip)
-
-        # Add it to the grid as a location
-        grid.add_data_to_grid_at_pos(cave_pos, cave.risk_symbols[cave_type])
-
 def main():
-    depth = 10647
-    target_pos = (7, 770)
-    cave = part_1(target_pos, depth)  # Part 1 answer
-
     grid = DictGrid(str)
-    grid
+    came_from, cost_so_far = dijkstra_dictgrid(grid, (0, 0, 1), target_pos, find_neighbors_cave)
+    print(cost_so_far[target_pos])
 
+depth = 10647
+target_pos = (7, 770, 1)
+cave = part_1(target_pos, depth)
 main()

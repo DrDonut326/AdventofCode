@@ -91,12 +91,15 @@ def bfs_dictgrid(grid: DictGrid, start: tuple):
 def dijkstra_dictgrid(grid: DictGrid, start: tuple, finish: tuple, neighbor_func):
     """Searches a dict grid for the shortest path between start and finish.
     User must pass in a function that tells Dijkstra how to find neighbors and their costs."""
+
     frontier = PriorityQueue()
     frontier.put(start, 0)
     came_from = dict()
     cost_so_far = dict()
     came_from[start] = None
     cost_so_far[start] = 0
+
+    stop_searching = False
 
     while not frontier.empty():
         current = frontier.get()
@@ -106,6 +109,9 @@ def dijkstra_dictgrid(grid: DictGrid, start: tuple, finish: tuple, neighbor_func
 
         # Get the pos and cost of that neighbors of this position
         for neighbor, neighbor_cost in neighbor_func(grid, current):
+
+            # Prune any that are already visited
+
             # Get the cost of going from current to neighbor
             new_cost = cost_so_far[current] + neighbor_cost
             if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
