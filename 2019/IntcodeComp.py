@@ -1,9 +1,12 @@
 class IntcodeComputer:
-    def __init__(self, codes: list[int], get_input: callable):
+    def __init__(self, codes: list[int], get_input: callable, input_generator=None, input_mode=None):
         self.codes = codes
         self.pointer = 0
+        self.input_generator = input_generator
         self.get_input = get_input
         self.outputs = []
+        self.input_mode = input_mode
+        self.ignore_input = False
 
     def increment_pointer(self, x=4):
         self.pointer += x
@@ -126,7 +129,13 @@ class IntcodeComputer:
         self.increment_pointer(4)
 
     def save(self, parameter_modes):
-        to_store = self.get_input()
+        if self.input_mode is None:
+            to_store = self.get_input()
+        elif self.input_mode == 'SELF':
+            to_store = self.get_input(self)
+        else:
+            raise EnvironmentError('Bad input mode passed in')
+
         if parameter_modes[0] == 0:
             index = self.codes[self.pointer + 1]
             self.codes[index] = to_store
